@@ -6,16 +6,16 @@
 <title>Claude 4つの使い方 完全ガイド</title>
 <style>
   :root{
-    --bg:#0e0f13; --panel:#171922; --panel2:#1e212d; --line:#2a2e3d;
-    --ink:#eef1f8; --sub:#a4acc2; --muted:#727a92;
-    --chat:#e08a4b; --cowork:#37c2a6; --code:#a374ff; --vscode:#4aa3ff;
-    --good:#37c2a6; --bad:#ff6b7d; --warn:#ffcf5c;
+    --bg:#f6f8fc; --panel:#ffffff; --panel2:#eef1f7; --line:#e2e6f0;
+    --ink:#1b1e28; --sub:#515a70; --muted:#8990a4;
+    --chat:#d9772a; --cowork:#159e83; --code:#7c4dff; --vscode:#2b7fd4;
+    --good:#159e83; --bad:#e0415c; --warn:#c8890a;
     --radius:18px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    margin:0; background:radial-gradient(1200px 700px at 80% -10%,#1a1d2b 0%,var(--bg) 55%);
+    margin:0; background:radial-gradient(1200px 700px at 80% -10%,#e9eefb 0%,var(--bg) 55%);
     color:var(--ink); font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     line-height:1.75; -webkit-font-smoothing:antialiased;
   }
@@ -31,7 +31,7 @@
   .hero h1 .hl{background:linear-gradient(90deg,var(--chat),var(--cowork),var(--code),var(--vscode)); -webkit-background-clip:text; background-clip:text; color:transparent}
   .hero p{color:var(--sub); font-size:17px; max-width:640px; margin:0 auto}
   .hero .note{margin-top:18px; font-size:13px; color:var(--muted)}
-  .fear{margin:26px auto 0; max-width:600px; background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--warn); border-radius:14px; padding:16px 20px; text-align:left; font-size:15px; color:var(--sub)}
+  .fear{margin:26px auto 0; max-width:600px; background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--warn); border-radius:14px; padding:16px 20px; text-align:left; font-size:15px; color:var(--sub); box-shadow:0 2px 10px rgba(27,30,40,.04)}
   .fear b{color:var(--ink)}
 
   /* SECTION */
@@ -41,15 +41,15 @@
   .lead{color:var(--sub); font-size:16px; margin:0 0 26px}
 
   /* VERDICT BOX */
-  .verdict{background:linear-gradient(135deg,#16241f,#171922); border:1px solid #2b4a41; border-radius:var(--radius); padding:26px 26px 22px}
+  .verdict{background:linear-gradient(135deg,#e9f7f2,#ffffff); border:1px solid #bfe6db; border-radius:var(--radius); padding:26px 26px 22px; box-shadow:0 4px 18px rgba(21,158,131,.08)}
   .verdict .big{font-size:20px; font-weight:800; margin:0 0 8px}
-  .verdict .big .pill{background:var(--cowork); color:#06231d; padding:3px 12px; border-radius:999px; font-size:16px; margin-left:4px}
+  .verdict .big .pill{background:var(--cowork); color:#ffffff; padding:3px 12px; border-radius:999px; font-size:16px; margin-left:4px}
   .verdict p{color:var(--sub); margin:8px 0 0; font-size:15px}
 
   /* CARDS */
   .cards{display:grid; grid-template-columns:1fr 1fr; gap:20px}
   @media(max-width:720px){.cards{grid-template-columns:1fr}}
-  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; box-shadow:0 4px 16px rgba(27,30,40,.05)}
   .card .top{padding:18px 20px 14px; border-bottom:1px solid var(--line)}
   .card .badge{font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--muted)}
   .card h3{margin:6px 0 2px; font-size:19px; font-weight:800}
@@ -59,17 +59,22 @@
   .c-code{border-top:3px solid var(--code)} .c-code h3{color:var(--code)}
   .c-vscode{border-top:3px solid var(--vscode)} .c-vscode h3{color:var(--vscode)}
 
-  /* MOCKUPS */
-  .mock{margin:0; background:#0b0c11; font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:12px}
-  .mbar{display:flex; align-items:center; gap:6px; padding:9px 12px; background:#20232f; border-bottom:1px solid #0b0c11}
+  /* MOCKUPS (light by default) */
+  .mock{margin:0; background:#eef1f7; font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:12px}
+  .mbar{display:flex; align-items:center; gap:6px; padding:9px 12px; background:#e0e4ee; border-bottom:1px solid #d4d9e6}
   .dot{width:11px; height:11px; border-radius:50%}
   .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
-  .mbar .addr{flex:1; margin-left:8px; background:#12141c; border-radius:7px; padding:4px 10px; color:#8b93ab; font-size:11px; text-align:center; overflow:hidden; white-space:nowrap}
+  .mbar .addr{flex:1; margin-left:8px; background:#ffffff; border-radius:7px; padding:4px 10px; color:#7a8199; font-size:11px; text-align:center; overflow:hidden; white-space:nowrap}
   .mbody{padding:14px; min-height:150px}
   .bubble{border-radius:12px; padding:8px 12px; margin:6px 0; max-width:85%; font-family:inherit}
-  .bubble.me{background:#2a2e3d; color:var(--ink); margin-left:auto}
-  .bubble.ai{background:#141722; border:1px solid #262a38; color:var(--sub)}
+  .bubble.me{background:#dbe1f0; color:var(--ink); margin-left:auto}
+  .bubble.ai{background:#ffffff; border:1px solid #e2e6f0; color:var(--sub)}
   .bubble.ai b{color:var(--chat)}
+
+  /* TERMINAL MOCKUP — ④ only, stays dark on purpose */
+  .c-vscode .mock{background:#0b0c11}
+  .c-vscode .mbar{background:#20232f; border-bottom:1px solid #0b0c11}
+  .c-vscode .mbar .addr{background:#12141c; color:#8b93ab}
   .term{color:#c9d1e6}
   .term .p{color:#37c2a6}
   .term .c{color:#7d86a0}
@@ -79,18 +84,6 @@
   .line{white-space:pre-wrap; word-break:break-word; margin:2px 0}
   .cursor{display:inline-block; width:8px; height:15px; background:#a374ff; vertical-align:middle; animation:blink 1s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
-  /* vscode mock */
-  .vs{display:grid; grid-template-columns:38px 128px 1fr; min-height:172px; background:#0b0c11}
-  .vs .rail{background:#181a24; display:flex; flex-direction:column; align-items:center; gap:14px; padding:12px 0; color:#5c6480}
-  .vs .rail div{font-size:16px}
-  .vs .rail .act{color:var(--vscode)}
-  .vs .exp{background:#12141c; border-right:1px solid #0b0c11; padding:10px 8px; color:#8b93ab; font-size:11px}
-  .vs .exp .fold{color:#c9d1e6; margin:3px 0}
-  .vs .exp .file{padding-left:12px; margin:2px 0}
-  .vs .exp .file.on{color:var(--vscode)}
-  .vs .side{padding:10px; font-size:11px}
-  .vs .side .h{color:var(--code); font-weight:700; margin-bottom:6px}
-  .vs .side .m{background:#141722; border:1px solid #262a38; border-radius:8px; padding:7px 9px; color:var(--sub); margin:5px 0}
 
   /* can / cant */
   .cc{padding:16px 20px 20px}
@@ -114,11 +107,11 @@
   .lv{font-weight:700}
   .lv.hi{color:var(--good)} .lv.mid{color:var(--warn)} .lv.lo{color:var(--bad)}
   .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
-  .scroll::-webkit-scrollbar{height:8px} .scroll::-webkit-scrollbar-thumb{background:#2a2e3d; border-radius:8px}
+  .scroll::-webkit-scrollbar{height:8px} .scroll::-webkit-scrollbar-thumb{background:#cfd4e0; border-radius:8px}
 
   /* DECISION FLOW */
   .flow{display:flex; flex-direction:column; gap:14px}
-  .qnode{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px}
+  .qnode{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:0 2px 10px rgba(27,30,40,.04)}
   .qnode .q{font-weight:800; font-size:15px; margin-bottom:10px}
   .branch{display:grid; grid-template-columns:1fr 1fr; gap:10px}
   @media(max-width:560px){.branch{grid-template-columns:1fr}}
@@ -131,7 +124,7 @@
   /* STEPS */
   .steps{position:relative; padding-left:8px}
   .step{position:relative; padding:0 0 8px 42px; margin-bottom:18px}
-  .step::before{content:attr(data-n); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:50%; background:var(--cowork); color:#06231d; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px}
+  .step::before{content:attr(data-n); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:50%; background:var(--cowork); color:#ffffff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px}
   .step::after{content:""; position:absolute; left:14px; top:32px; bottom:-16px; width:2px; background:var(--line)}
   .step:last-child::after{display:none}
   .step h4{margin:2px 0 4px; font-size:16px; font-weight:800}
@@ -141,7 +134,7 @@
 
   /* MILESTONES */
   .mile{display:grid; grid-template-columns:1fr; gap:12px}
-  .mrow{display:grid; grid-template-columns:96px 1fr; gap:14px; align-items:start; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+  .mrow{display:grid; grid-template-columns:96px 1fr; gap:14px; align-items:start; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; box-shadow:0 2px 10px rgba(27,30,40,.04)}
   @media(max-width:560px){.mrow{grid-template-columns:1fr}}
   .mrow .lvl{font-weight:800; font-size:14px}
   .mrow .lvl small{display:block; color:var(--muted); font-weight:600; font-size:11px; margin-top:2px}
@@ -151,7 +144,7 @@
   .mrow .goal .tools{display:inline-block; margin-top:6px; font-size:12px; color:var(--muted)}
 
   /* callout */
-  .callout{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--code); border-radius:12px; padding:16px 18px; font-size:14px; color:var(--sub)}
+  .callout{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--code); border-radius:12px; padding:16px 18px; font-size:14px; color:var(--sub); box-shadow:0 2px 10px rgba(27,30,40,.04)}
   .callout b{color:var(--ink)}
   footer{padding:40px 0 60px; color:var(--muted); font-size:12.5px; text-align:center; border-top:1px solid var(--line)}
   footer a{color:var(--muted)}
@@ -271,9 +264,9 @@
           <div class="mbody">
             <div class="bubble me">ログインの不具合を直して</div>
             <div class="bubble ai"><b style="color:var(--code)">Claude Code</b> ｜ login.js の原因を特定しました。変更点を差分で表示します ↓</div>
-            <div style="background:#0b0c11;border:1px solid #262a38;border-radius:8px;padding:8px 10px;font-family:'SF Mono',ui-monospace,monospace;font-size:11px;margin:6px 0">
-              <div style="color:#ff6b7d">- if (user) {</div>
-              <div style="color:#37c2a6">+ if (user &amp;&amp; user.token) {</div>
+            <div style="background:#f4f6fb;border:1px solid #e2e6f0;border-radius:8px;padding:8px 10px;font-family:'SF Mono',ui-monospace,monospace;font-size:11px;margin:6px 0">
+              <div style="color:#c0392b">- if (user) {</div>
+              <div style="color:#0f8a70">+ if (user &amp;&amp; user.token) {</div>
             </div>
             <div style="font-size:12.5px;color:var(--vscode)">［ ✓ 承認 ］　［ ✕ 却下 ］</div>
           </div>
