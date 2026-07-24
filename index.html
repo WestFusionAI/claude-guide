@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude 4つの使い方 完全ガイド</title>
+<style>
+  :root{
+    --bg:#0e0f13; --panel:#171922; --panel2:#1e212d; --line:#2a2e3d;
+    --ink:#eef1f8; --sub:#a4acc2; --muted:#727a92;
+    --chat:#e08a4b; --cowork:#37c2a6; --code:#a374ff; --vscode:#4aa3ff;
+    --good:#37c2a6; --bad:#ff6b7d; --warn:#ffcf5c;
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:radial-gradient(1200px 700px at 80% -10%,#1a1d2b 0%,var(--bg) 55%);
+    color:var(--ink); font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 20px}
+  h1,h2,h3{line-height:1.35; letter-spacing:.01em}
+  a{color:var(--vscode)}
+  .tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.08em; padding:5px 12px; border-radius:999px}
+
+  /* HERO */
+  header.hero{padding:70px 0 40px; text-align:center}
+  .hero .kicker{color:var(--muted); font-size:13px; letter-spacing:.22em; font-weight:700}
+  .hero h1{font-size:clamp(30px,6vw,48px); margin:14px 0 10px; font-weight:800}
+  .hero h1 .hl{background:linear-gradient(90deg,var(--chat),var(--cowork),var(--code),var(--vscode)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .hero p{color:var(--sub); font-size:17px; max-width:640px; margin:0 auto}
+  .hero .note{margin-top:18px; font-size:13px; color:var(--muted)}
+  .fear{margin:26px auto 0; max-width:600px; background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--warn); border-radius:14px; padding:16px 20px; text-align:left; font-size:15px; color:var(--sub)}
+  .fear b{color:var(--ink)}
+
+  /* SECTION */
+  section{padding:44px 0; border-top:1px solid var(--line)}
+  .eyebrow{color:var(--muted); font-size:12px; letter-spacing:.2em; font-weight:700}
+  section h2{font-size:clamp(22px,4.4vw,30px); margin:8px 0 6px; font-weight:800}
+  .lead{color:var(--sub); font-size:16px; margin:0 0 26px}
+
+  /* VERDICT BOX */
+  .verdict{background:linear-gradient(135deg,#16241f,#171922); border:1px solid #2b4a41; border-radius:var(--radius); padding:26px 26px 22px}
+  .verdict .big{font-size:20px; font-weight:800; margin:0 0 8px}
+  .verdict .big .pill{background:var(--cowork); color:#06231d; padding:3px 12px; border-radius:999px; font-size:16px; margin-left:4px}
+  .verdict p{color:var(--sub); margin:8px 0 0; font-size:15px}
+
+  /* CARDS */
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column}
+  .card .top{padding:18px 20px 14px; border-bottom:1px solid var(--line)}
+  .card .badge{font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--muted)}
+  .card h3{margin:6px 0 2px; font-size:19px; font-weight:800}
+  .card .who{font-size:13px; color:var(--sub)}
+  .c-chat{border-top:3px solid var(--chat)} .c-chat h3{color:var(--chat)}
+  .c-cowork{border-top:3px solid var(--cowork)} .c-cowork h3{color:var(--cowork)}
+  .c-code{border-top:3px solid var(--code)} .c-code h3{color:var(--code)}
+  .c-vscode{border-top:3px solid var(--vscode)} .c-vscode h3{color:var(--vscode)}
+
+  /* MOCKUPS */
+  .mock{margin:0; background:#0b0c11; font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:12px}
+  .mbar{display:flex; align-items:center; gap:6px; padding:9px 12px; background:#20232f; border-bottom:1px solid #0b0c11}
+  .dot{width:11px; height:11px; border-radius:50%}
+  .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+  .mbar .addr{flex:1; margin-left:8px; background:#12141c; border-radius:7px; padding:4px 10px; color:#8b93ab; font-size:11px; text-align:center; overflow:hidden; white-space:nowrap}
+  .mbody{padding:14px; min-height:150px}
+  .bubble{border-radius:12px; padding:8px 12px; margin:6px 0; max-width:85%; font-family:inherit}
+  .bubble.me{background:#2a2e3d; color:var(--ink); margin-left:auto}
+  .bubble.ai{background:#141722; border:1px solid #262a38; color:var(--sub)}
+  .bubble.ai b{color:var(--chat)}
+  .term{color:#c9d1e6}
+  .term .p{color:#37c2a6}
+  .term .c{color:#7d86a0}
+  .term .f{color:#a374ff}
+  .term .ok{color:#37c2a6}
+  .term .run{color:#ffcf5c}
+  .line{white-space:pre-wrap; word-break:break-word; margin:2px 0}
+  .cursor{display:inline-block; width:8px; height:15px; background:#a374ff; vertical-align:middle; animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  /* vscode mock */
+  .vs{display:grid; grid-template-columns:38px 128px 1fr; min-height:172px; background:#0b0c11}
+  .vs .rail{background:#181a24; display:flex; flex-direction:column; align-items:center; gap:14px; padding:12px 0; color:#5c6480}
+  .vs .rail div{font-size:16px}
+  .vs .rail .act{color:var(--vscode)}
+  .vs .exp{background:#12141c; border-right:1px solid #0b0c11; padding:10px 8px; color:#8b93ab; font-size:11px}
+  .vs .exp .fold{color:#c9d1e6; margin:3px 0}
+  .vs .exp .file{padding-left:12px; margin:2px 0}
+  .vs .exp .file.on{color:var(--vscode)}
+  .vs .side{padding:10px; font-size:11px}
+  .vs .side .h{color:var(--code); font-weight:700; margin-bottom:6px}
+  .vs .side .m{background:#141722; border:1px solid #262a38; border-radius:8px; padding:7px 9px; color:var(--sub); margin:5px 0}
+
+  /* can / cant */
+  .cc{padding:16px 20px 20px}
+  .cc .h{font-size:12px; font-weight:700; letter-spacing:.1em; margin:12px 0 6px; display:flex; align-items:center; gap:7px}
+  .cc .h.can{color:var(--good)} .cc .h.cant{color:var(--bad)}
+  .cc ul{margin:0; padding:0; list-style:none}
+  .cc li{position:relative; padding:3px 0 3px 22px; font-size:13.5px; color:var(--sub)}
+  .cc li::before{position:absolute; left:0; top:2px; font-weight:700}
+  .cc .can li::before{content:"✓"; color:var(--good)}
+  .cc .cant li::before{content:"✕"; color:var(--bad)}
+  .card .foot{margin-top:auto; padding:12px 20px; background:var(--panel2); border-top:1px solid var(--line); font-size:12.5px; color:var(--muted); display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .card .foot b{color:var(--ink)}
+
+  /* COMPARE TABLE */
+  .tbl{width:100%; border-collapse:collapse; font-size:13.5px; overflow:hidden; border-radius:14px; border:1px solid var(--line)}
+  .tbl th,.tbl td{padding:12px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+  .tbl thead th{background:var(--panel2); font-size:12px; color:var(--sub); white-space:nowrap}
+  .tbl tbody th{background:var(--panel); font-weight:700; color:var(--ink); font-size:12.5px; white-space:nowrap}
+  .tbl td{background:var(--panel); color:var(--sub)}
+  .tbl .th-chat{color:var(--chat)} .th-cowork{color:var(--cowork)} .th-code{color:var(--code)} .th-vscode{color:var(--vscode)}
+  .lv{font-weight:700}
+  .lv.hi{color:var(--good)} .lv.mid{color:var(--warn)} .lv.lo{color:var(--bad)}
+  .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .scroll::-webkit-scrollbar{height:8px} .scroll::-webkit-scrollbar-thumb{background:#2a2e3d; border-radius:8px}
+
+  /* DECISION FLOW */
+  .flow{display:flex; flex-direction:column; gap:14px}
+  .qnode{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px}
+  .qnode .q{font-weight:800; font-size:15px; margin-bottom:10px}
+  .branch{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  @media(max-width:560px){.branch{grid-template-columns:1fr}}
+  .opt{border-radius:11px; padding:11px 13px; font-size:13.5px; border:1px solid var(--line); background:var(--panel2)}
+  .opt .lab{font-weight:700; font-size:12px; letter-spacing:.05em; display:block; margin-bottom:3px}
+  .opt.a .lab{color:var(--cowork)} .opt.b .lab{color:var(--code)}
+  .opt .res{color:var(--sub)}
+  .opt .res b{color:var(--ink)}
+
+  /* STEPS */
+  .steps{position:relative; padding-left:8px}
+  .step{position:relative; padding:0 0 8px 42px; margin-bottom:18px}
+  .step::before{content:attr(data-n); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:50%; background:var(--cowork); color:#06231d; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px}
+  .step::after{content:""; position:absolute; left:14px; top:32px; bottom:-16px; width:2px; background:var(--line)}
+  .step:last-child::after{display:none}
+  .step h4{margin:2px 0 4px; font-size:16px; font-weight:800}
+  .step p{margin:0; color:var(--sub); font-size:14px}
+  .step .tip{margin-top:8px; font-size:12.5px; color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 12px}
+  .step .tip b{color:var(--warn)}
+
+  /* MILESTONES */
+  .mile{display:grid; grid-template-columns:1fr; gap:12px}
+  .mrow{display:grid; grid-template-columns:96px 1fr; gap:14px; align-items:start; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px}
+  @media(max-width:560px){.mrow{grid-template-columns:1fr}}
+  .mrow .lvl{font-weight:800; font-size:14px}
+  .mrow .lvl small{display:block; color:var(--muted); font-weight:600; font-size:11px; margin-top:2px}
+  .m1 .lvl{color:var(--chat)} .m2 .lvl{color:var(--cowork)} .m3 .lvl{color:var(--code)} .m4 .lvl{color:var(--vscode)}
+  .mrow .goal{font-size:14px; color:var(--sub)}
+  .mrow .goal b{color:var(--ink)}
+  .mrow .goal .tools{display:inline-block; margin-top:6px; font-size:12px; color:var(--muted)}
+
+  /* callout */
+  .callout{background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--code); border-radius:12px; padding:16px 18px; font-size:14px; color:var(--sub)}
+  .callout b{color:var(--ink)}
+  footer{padding:40px 0 60px; color:var(--muted); font-size:12.5px; text-align:center; border-top:1px solid var(--line)}
+  footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">CLAUDE 活用ガイド</div>
+    <h1>Claudeの<span class="hl">4つの使い方</span>、<br>どれを・いつ使う？</h1>
+    <p>チャット版・コワーク・Claude Code・VS Code版。同じ「Claude」でも役割はまるで違います。この1枚で、自分に合う入口が分かります。</p>
+    <div class="fear">
+      <b>「Claude Codeって、なんか難しそう…」</b><br>
+      そう感じている方へ。まず、<b>いきなりCodeに挑む必要はありません</b>——ほとんどの仕事は手前の「チャット」と「コワーク」で片付きます。そして実は、<b>Claude Codeにも“ボタン操作で使えるアプリ版”があり、黒い画面だけではありません。</b>このガイドは、怖くない順番で進めるように作りました。
+    </div>
+    <div class="note">※ 各製品の画面はイメージを再現したモックアップです（本物の見た目に近づけています）</div>
+  </div>
+</header>
+
+<!-- VERDICT -->
+<section id="verdict">
+  <div class="wrap">
+    <div class="eyebrow">まず結論</div>
+    <h2>「この資料づくり」は、コワーク向き？ Code向き？</h2>
+    <p class="lead">せっかくなので、この資料を作る作業自体を例に判断してみます。</p>
+    <div class="verdict">
+      <div class="big">答え：この作業は <span class="pill">コワーク向き</span></div>
+      <p>今回は「調べて → 構成して → 見やすいHTMLを1枚作る」という<b>資料制作タスク</b>です。既存のプログラムを触るわけでも、大量のファイルを横断するわけでもありません。こういう単発の成果物づくりは、コワークが最速で、作ったファイルもそのまま受け取れます。</p>
+      <p style="margin-top:12px"><b style="color:var(--code)">Claude Codeが向くのはこんな時：</b> 実際に動くアプリのコードを直す／何十ものファイルにまたがる修正／プログラムを実行してテストする——つまり「開発そのもの」。今回はそれに当たらないので、コワークが正解、というわけです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 CARDS -->
+<section id="cards">
+  <div class="wrap">
+    <div class="eyebrow">4つの道具</div>
+    <h2>それぞれ「何者」なのか</h2>
+    <p class="lead">左上ほど気軽、右下ほど本格的。画面のイメージと一緒に、できること・できないことを見ていきます。</p>
+    <div class="callout" style="margin:0 0 22px; border-left-color:var(--code)">
+      <b>③と④は「同じClaude Code」の別の顔です。</b> 中身のエンジンは同じで、③はボタン操作のアプリ、④は黒い画面（ターミナル）。さらにVS Codeの中には画面付きパネルもあり、Codeには“3つの入口”があります。<b>苦手なら、まず③のアプリ版から</b>で大丈夫です。
+    </div>
+    <div class="cards">
+
+      <!-- CHAT -->
+      <div class="card c-chat">
+        <div class="top">
+          <div class="badge">① いちばん身近</div>
+          <h3>チャット版 Claude</h3>
+          <div class="who">Web・スマホアプリ。会話で相談する道具。</div>
+        </div>
+        <div class="mock">
+          <div class="mbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="addr">claude.ai</span></div>
+          <div class="mbody">
+            <div class="bubble me">副業のnote記事、構成を考えて</div>
+            <div class="bubble ai"><b>Claude</b> ｜ いいですね。読者の悩み→共感→解決策→行動、の4部構成が…</div>
+            <div class="bubble me">タイトル案も5つ</div>
+          </div>
+        </div>
+        <div class="cc">
+          <div class="h can">◎ できること</div>
+          <ul class="can">
+            <li>相談・壁打ち・アイデア出し</li>
+            <li>文章の作成、要約、翻訳、添削</li>
+            <li>画像やPDFを見せて質問する</li>
+          </ul>
+          <div class="h cant">△ できないこと</div>
+          <ul class="cant">
+            <li>あなたのPCのファイルを勝手に操作する</li>
+            <li>複数の作業を自動で連続実行する</li>
+          </ul>
+        </div>
+        <div class="foot"><span>難易度 <b>★☆☆☆☆</b></span><span>準備 <b>ほぼ不要</b></span></div>
+      </div>
+
+      <!-- COWORK -->
+      <div class="card c-cowork">
+        <div class="top">
+          <div class="badge">② 作業を任せる</div>
+          <h3>Claude コワーク</h3>
+          <div class="who">デスクトップアプリ。ファイル仕事を代行する相棒。</div>
+        </div>
+        <div class="mock">
+          <div class="mbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="addr">Claude — Cowork</span></div>
+          <div class="mbody">
+            <div class="bubble me">Downloadsの商品CSVを整理して利益表にして</div>
+            <div class="bubble ai"><b style="color:var(--cowork)">Cowork</b> ｜ ✓ ファイルを確認 ✓ 重複を削除 ✓ 利益率を計算 ✓ 利益表.xlsx を作成しました</div>
+          </div>
+        </div>
+        <div class="cc">
+          <div class="h can">◎ できること</div>
+          <ul class="can">
+            <li>PC内のファイルを読む・整理する・作る</li>
+            <li>調査→資料作成など複数工程を自動代行</li>
+            <li>Excel・Word・PDF・スライドの生成</li>
+            <li>接続したGmail・Drive・Notion等の操作</li>
+          </ul>
+          <div class="h cant">△ できないこと</div>
+          <ul class="cant">
+            <li>大規模なプログラム開発（Codeの領域）</li>
+            <li>重要な最終判断（承認は人が行う設計）</li>
+          </ul>
+        </div>
+        <div class="foot"><span>難易度 <b>★★☆☆☆</b></span><span>プラン <b>有料プラン</b></span></div>
+      </div>
+
+      <!-- CODE : DESKTOP APP -->
+      <div class="card c-code">
+        <div class="top">
+          <div class="badge">③ 開発を“画面で”</div>
+          <h3>Claude Code ｜ デスクトップアプリ版</h3>
+          <div class="who">単体アプリ。ボタン操作で使える、Codeのやさしい顔。</div>
+        </div>
+        <div class="mock">
+          <div class="mbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="addr">Claude Code</span></div>
+          <div class="mbody">
+            <div class="bubble me">ログインの不具合を直して</div>
+            <div class="bubble ai"><b style="color:var(--code)">Claude Code</b> ｜ login.js の原因を特定しました。変更点を差分で表示します ↓</div>
+            <div style="background:#0b0c11;border:1px solid #262a38;border-radius:8px;padding:8px 10px;font-family:'SF Mono',ui-monospace,monospace;font-size:11px;margin:6px 0">
+              <div style="color:#ff6b7d">- if (user) {</div>
+              <div style="color:#37c2a6">+ if (user &amp;&amp; user.token) {</div>
+            </div>
+            <div style="font-size:12.5px;color:var(--vscode)">［ ✓ 承認 ］　［ ✕ 却下 ］</div>
+          </div>
+        </div>
+        <div class="cc">
+          <div class="h can">◎ できること</div>
+          <ul class="can">
+            <li>Claude Codeの力を、GUI（画面）で使える</li>
+            <li>変更を差分で確認し、ボタンで承認/却下</li>
+            <li>ダブルクリックで導入、黒い画面は不要</li>
+            <li>複数の作業を横断・自動化できる</li>
+          </ul>
+          <div class="h cant">△ できないこと・ハードル</div>
+          <ul class="cant">
+            <li>ターミナル版よりは機能がやや少なめ</li>
+            <li>中身は開発ツール。作るもの次第で知識は要る</li>
+          </ul>
+        </div>
+        <div class="foot"><span>難易度 <b>★★★☆☆</b></span><span>特長 <b>Codeの入門口</b></span></div>
+      </div>
+
+      <!-- CODE : TERMINAL CLI -->
+      <div class="card c-vscode">
+        <div class="top">
+          <div class="badge">④ 開発を“最速で”</div>
+          <h3>Claude Code ｜ ターミナル(CLI)版</h3>
+          <div class="who">黒い画面で動く本体。VS Codeの中でも使える最上位。</div>
+        </div>
+        <div class="mock">
+          <div class="mbar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="addr">VS Code — Terminal</span></div>
+          <div class="mbody term">
+            <div class="line"><span class="p">$</span> claude</div>
+            <div class="line"><span class="c"># 話しかけるだけで動く</span></div>
+            <div class="line"><span class="run">▸</span> <span class="f">login.js</span> を分析中…</div>
+            <div class="line"><span class="ok">✓</span> 原因を特定：入力チェック漏れ</div>
+            <div class="line"><span class="ok">✓</span> 修正を適用 <span class="f">login.js</span></div>
+            <div class="line"><span class="ok">✓</span> テスト 12件すべて通過</div>
+            <div class="line"><span class="p">›</span> <span class="cursor"></span></div>
+          </div>
+        </div>
+        <div class="cc">
+          <div class="h can">◎ できること</div>
+          <ul class="can">
+            <li>Claude Codeの全機能をフルに使える</li>
+            <li>新機能がいちばん早く来る“本体”</li>
+            <li>自動化・パイプライン・大規模作業に強い</li>
+          </ul>
+          <div class="h cant">△ できないこと・ハードル</div>
+          <ul class="cant">
+            <li>ターミナル（黒い画面）に慣れが必要</li>
+            <li>導入・設定のひと手間がある</li>
+            <li>開発の土台があるほど効果が出る</li>
+          </ul>
+        </div>
+        <div class="foot"><span>難易度 <b>★★★★★</b></span><span>対象 <b>開発の本命</b></span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE TABLE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="eyebrow">ひと目で比較</div>
+    <h2>メリット・デメリット早見表</h2>
+    <p class="lead">横スクロールで4製品を比べられます。太字の色が濃いほど「得意」です。</p>
+    <div class="scroll">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>観点</th>
+            <th class="th-chat">① チャット版</th>
+            <th class="th-cowork">② コワーク</th>
+            <th class="th-code">③ Code デスクトップ版</th>
+            <th class="th-vscode">④ Code ターミナル版</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>ひとことで</th>
+            <td>会話する相談相手</td>
+            <td>作業を任せる相棒</td>
+            <td>画面で使う開発職人</td>
+            <td>最速の開発職人（本体）</td>
+          </tr>
+          <tr>
+            <th>最大のメリット</th>
+            <td>とにかく手軽・即答</td>
+            <td>PC作業を丸ごと代行</td>
+            <td>ボタン操作でCodeを使える</td>
+            <td>全機能・最速・自動化</td>
+          </tr>
+          <tr>
+            <th>主なデメリット</th>
+            <td>ファイル操作・自動実行は不可</td>
+            <td>本格開発には非対応</td>
+            <td>本体よりは機能がやや少なめ</td>
+            <td>黒い画面・設定の手間</td>
+          </tr>
+          <tr>
+            <th>始めやすさ</th>
+            <td><span class="lv hi">とても簡単</span></td>
+            <td><span class="lv hi">簡単</span></td>
+            <td><span class="lv mid">ふつう</span></td>
+            <td><span class="lv lo">上級者向け</span></td>
+          </tr>
+          <tr>
+            <th>作業環境</th>
+            <td>ブラウザ・スマホ</td>
+            <td>デスクトップアプリ</td>
+            <td>デスクトップアプリ</td>
+            <td>ターミナル / VS Code</td>
+          </tr>
+          <tr>
+            <th>ファイル操作</th>
+            <td><span class="lv lo">不可</span></td>
+            <td><span class="lv hi">得意</span></td>
+            <td><span class="lv hi">得意</span></td>
+            <td><span class="lv hi">得意</span></td>
+          </tr>
+          <tr>
+            <th>複数工程の自動実行</th>
+            <td><span class="lv lo">不可</span></td>
+            <td><span class="lv hi">得意</span></td>
+            <td><span class="lv hi">得意</span></td>
+            <td><span class="lv hi">得意</span></td>
+          </tr>
+          <tr>
+            <th>プログラミング</th>
+            <td><span class="lv mid">相談まで</span></td>
+            <td><span class="lv mid">軽い範囲</span></td>
+            <td><span class="lv hi">本命</span></td>
+            <td><span class="lv hi">本命</span></td>
+          </tr>
+          <tr>
+            <th>こんな人に</th>
+            <td>まず試したい全員</td>
+            <td>事務・資料・副業作業を効率化したい人</td>
+            <td>黒い画面が苦手な開発初心者</td>
+            <td>自動化まで極めたい人</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <div class="eyebrow">迷ったら</div>
+    <h2>コワーク？ Code？ 3つの質問で決まる</h2>
+    <p class="lead">「今やりたいこと」を思い浮かべて、上から順に答えてください。</p>
+    <div class="flow">
+      <div class="qnode">
+        <div class="q">Q1. ただ相談・文章作成・調べ物がしたい？</div>
+        <div class="branch">
+          <div class="opt a"><span class="lab">はい</span><span class="res"><b>① チャット版</b>でOK。これ以上の道具は不要です。</span></div>
+          <div class="opt b"><span class="lab">いいえ（PCで何か作業させたい）</span><span class="res">→ Q2へ</span></div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q2. その作業は「動くプログラム（アプリ）の開発・修正」？</div>
+        <div class="branch">
+          <div class="opt a"><span class="lab">いいえ（資料・ファイル・事務作業）</span><span class="res"><b>② コワーク</b>が最適。今回のHTML作成もここ。</span></div>
+          <div class="opt b"><span class="lab">はい（コードを触る仕事）</span><span class="res">→ Q3へ</span></div>
+        </div>
+      </div>
+      <div class="qnode">
+        <div class="q">Q3. 黒い画面（ターミナル）に抵抗がある？</div>
+        <div class="branch">
+          <div class="opt a"><span class="lab">ある・画面で確認したい</span><span class="res"><b>③ デスクトップアプリ版</b>から。ボタンで承認でき安心。</span></div>
+          <div class="opt b"><span class="lab">ない・最速で自動化したい</span><span class="res"><b>④ ターミナル(CLI)版</b>。全機能をフルに。</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:20px">
+      <b>覚え方はシンプルです。</b> 「話すだけ」＝チャット、「PCの作業を代行」＝コワーク、「アプリ開発」＝Code。<b>副業や事務の効率化なら、9割はコワークで足ります。</b>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section id="steps">
+  <div class="wrap">
+    <div class="eyebrow">苦手意識ゼロで進む</div>
+    <h2>初心者のためのステップ</h2>
+    <p class="lead">飛ばさず、順番に。1段ずつ「できた」を積むのがコツです。Codeは<b>最後で十分</b>です。</p>
+    <div class="steps">
+      <div class="step" data-n="1">
+        <h4>チャット版で「AIと話す」に慣れる</h4>
+        <p>ブラウザやスマホで claude.ai を開き、仕事の相談を1つ投げてみる。うまくいく頼み方（背景→やりたいこと→形式）を体で覚えます。</p>
+        <div class="tip"><b>最初の一歩：</b>「〇〇について、初心者向けに3行で教えて」から。</div>
+      </div>
+      <div class="step" data-n="2">
+        <h4>コワークで「作業を任せる」を体験する</h4>
+        <p>デスクトップアプリを入れ、フォルダ整理やCSVの集計、資料作成など「面倒だけど単純」な作業を1つ任せてみる。成果物がファイルで返ってくる感動がここにあります。</p>
+        <div class="tip"><b>最初の一歩：</b>「このフォルダのファイルを種類別に整理して」。</div>
+      </div>
+      <div class="step" data-n="3">
+        <h4>コワークで“複数工程”をひとつなぎにする</h4>
+        <p>「調べる→表にする→スライドにする」のように、複数の作業を1回の依頼でつなげてみる。ここまでで、日々の作業のかなりが自動化できます。</p>
+        <div class="tip"><b>最初の一歩：</b>定期タスク（毎朝の集計など）を1つ登録してみる。</div>
+      </div>
+      <div class="step" data-n="4">
+        <h4>興味が出たらCodeの“アプリ版”から覗く</h4>
+        <p>「自分のツールを作りたい」と思ったら、ここで初めて開発へ。いきなり黒い画面ではなく、ダブルクリックで入るデスクトップアプリ版から。変更は差分で見え、ボタンで承認できます。</p>
+        <div class="tip"><b>安心ポイント：</b>Claudeが変更を提案し、あなたは<b>［承認］か［却下］を押すだけ</b>。</div>
+      </div>
+      <div class="step" data-n="5">
+        <h4>慣れたらターミナル(CLI)版へ</h4>
+        <p>速さと自由度、そして自動化が欲しくなったら最後の段へ。VS Codeの中でも使えます。ここまで来れば、黒い画面はもう「怖いもの」ではなく「最速の相棒」です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section id="milestones">
+  <div class="wrap">
+    <div class="eyebrow">上達の目安</div>
+    <h2>マイルストーン</h2>
+    <p class="lead">「どこまでできたら次へ？」の目安です。自分のレベルの現在地を確認してください。</p>
+    <div class="mile">
+      <div class="mrow m1">
+        <div class="lvl">Lv.1<small>入門</small></div>
+        <div class="goal"><b>AIに相談し、答えを仕事に使える。</b> 文章作成や調べ物をチャットで頼めるようになった状態。<span class="tools">🛠 チャット版</span></div>
+      </div>
+      <div class="mrow m2">
+        <div class="lvl">Lv.2<small>実務</small></div>
+        <div class="goal"><b>面倒なファイル作業をコワークに任せられる。</b> Excel集計・資料作成・フォルダ整理を丸ごと代行させられる状態。<span class="tools">🛠 コワーク</span></div>
+      </div>
+      <div class="mrow m3">
+        <div class="lvl">Lv.3<small>自動化</small></div>
+        <div class="goal"><b>複数工程や定期タスクを組み立てられる。</b> 「調べる→作る→送る」を一括依頼、毎日の作業を自動で回せる状態。<span class="tools">🛠 コワーク（応用）</span></div>
+      </div>
+      <div class="mrow m4">
+        <div class="lvl">Lv.4<small>開発</small></div>
+        <div class="goal"><b>自分専用のツールやアプリを作れる。</b> Claudeと一緒にコードを書き、動くものを世に出せる状態。<span class="tools">🛠 Code デスクトップ版 → ターミナル(CLI)版</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:22px; border-left-color:var(--cowork)">
+      <b>大事なこと：</b> 全員がLv.4を目指す必要はありません。<b>やりたいことがLv.2やLv.3で叶うなら、そこがゴール</b>です。無理にCodeへ登らなくて大丈夫。道具は「目的に足りていれば正解」です。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Claude 4つの使い方ガイド ／ 2026年7月時点の情報をもとに作成</p>
+    <p>出典：<a href="https://www.anthropic.com/product/claude-cowork">Anthropic – Claude Cowork</a>ほか公開情報</p>
+  </div>
+</footer>
+
+</body>
+</html>
