@@ -6,10 +6,10 @@
 <title>Claude 4つの使い方 完全ガイド</title>
 <style>
   :root{
-    --bg:#f6f8fc; --panel:#ffffff; --panel2:#eef1f7; --line:#e2e6f0;
-    --ink:#1b1e28; --sub:#515a70; --muted:#8990a4;
-    --chat:#d9772a; --cowork:#159e83; --code:#7c4dff; --vscode:#2b7fd4;
-    --good:#159e83; --bad:#e0415c; --warn:#c8890a;
+    --bg:#eaeef6; --panel:#ffffff; --panel2:#eef1f8; --line:#cdd4e4;
+    --ink:#14171f; --sub:#39414f; --muted:#616a7e;
+    --chat:#c96a1e; --cowork:#0e8f76; --code:#6c3cf5; --vscode:#1f74cc;
+    --good:#0e8f76; --bad:#d63652; --warn:#b57a08;
     --radius:18px;
   }
   *{box-sizing:border-box}
@@ -49,7 +49,7 @@
   /* CARDS */
   .cards{display:grid; grid-template-columns:1fr 1fr; gap:20px}
   @media(max-width:720px){.cards{grid-template-columns:1fr}}
-  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; box-shadow:0 4px 16px rgba(27,30,40,.05)}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; box-shadow:0 6px 22px rgba(20,23,31,.09)}
   .card .top{padding:18px 20px 14px; border-bottom:1px solid var(--line)}
   .card .badge{font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--muted)}
   .card h3{margin:6px 0 2px; font-size:19px; font-weight:800}
@@ -64,7 +64,7 @@
   .mbar{display:flex; align-items:center; gap:6px; padding:9px 12px; background:#e0e4ee; border-bottom:1px solid #d4d9e6}
   .dot{width:11px; height:11px; border-radius:50%}
   .r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
-  .mbar .addr{flex:1; margin-left:8px; background:#ffffff; border-radius:7px; padding:4px 10px; color:#7a8199; font-size:11px; text-align:center; overflow:hidden; white-space:nowrap}
+  .mbar .addr{flex:1; margin-left:8px; background:#ffffff; border-radius:7px; padding:4px 10px; color:#5f677d; font-size:11px; text-align:center; overflow:hidden; white-space:nowrap}
   .mbody{padding:14px; min-height:150px}
   .bubble{border-radius:12px; padding:8px 12px; margin:6px 0; max-width:85%; font-family:inherit}
   .bubble.me{background:#dbe1f0; color:var(--ink); margin-left:auto}
